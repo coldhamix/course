@@ -1,0 +1,30 @@
+<div class="action-group-title">Рисование</div>
+<div class="action-group-buttons">
+  <div class="d-flex">
+    <div class="action action-btn"
+         (click)="selectPencil()"
+         [class.selected]="pencilSelected">Карандаш</div>
+    <div class="action action-btn"
+         (click)="selectEraser()"
+         [class.selected]="eraserSelected">Стерка</div>
+  </div>
+  <div class="d-flex">
+    <div class="action action-btn"
+         (click)="selectBucket()"
+         [class.selected]="bucketSelected">Заливка</div>
+  </div>
+  <div class="action action-btn" (click)="toggleSizeSelector()">Размер: {{currentSize}}пкс</div>
+  <div class="action action-dropdown d-flex" [hidden]="!sizeSelectorOpen">
+    <div class="action action-btn" (click)="selectSize(1)">1</div>
+    <div class="action action-btn" (click)="selectSize(2)">2</div>
+    <div class="action action-btn" (click)="selectSize(4)">4</div>
+    <div class="action action-btn" (click)="selectSize(8)">8</div>
+  </div>
+  <label class="action action-btn action-color">
+    Цвет
+    <span class="color-sample" [style.backgroundColor]="currentColor"></span>
+    <input type="color"
+           [(ngModel)]="currentColor"
+           (ngModelChange)="colorChanged($event)">
+  </label>
+</div>

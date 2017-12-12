@@ -1,17 +1,49 @@
 .container {
   height: 100%;
   display: flex;
-  align-items: center;
-  justify-content: center;
+  overflow: hidden;
 
-  background: url(../../../assets/background.jpg) no-repeat center fixed;
-  -webkit-background-size: cover; /* pour anciens Chrome et Safari */
-  background-size: cover; /* version standardisée */
+  background: #ECF0F1;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
 
-  .title {
-    color: white;
-    margin:0;
-    padding:50px 20px;
+  .canvas-container {
+    position: relative;
+    width: 100%;
+    padding: 20px;
+    overflow: auto;
+
+    canvas {
+      box-shadow: 2px 2px 5px rgba(37, 55, 61, .3);
+      cursor: crosshair;
+    }
+
+    .canvas-placeholder {
+      position: absolute;
+      width: 400px;
+      height: 500px;
+      border: 1px dashed black;
+    }
+
+    .resize-handle {
+      display: inline-block;
+      width: 4px;
+      height: 4px;
+      border: 1px solid #25373D;
+      background: white;
+      position: absolute;
+
+      &.dia {
+        &-1 {
+          cursor: sw-resize;
+        }
+        &-2 {
+          cursor: nw-resize;
+        }
+      }
+
+    }
+
   }
 
 }

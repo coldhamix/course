@@ -1,0 +1,126 @@
+:host {
+  background: #2c3e50;
+  padding: 20px;
+  box-sizing: border-box;
+  width: 250px;
+
+  /deep/ .action-group-title {
+    color: #D2D7D3;
+    font-weight: bold;
+    text-shadow: 1px 1px 2px #25373D;
+    margin-bottom: 10px;
+  }
+
+  app-sidebar-file,
+  app-sidebar-drawing,
+  app-sidebar-image,
+  app-sidebar-fx {
+    display: block;
+    border-bottom: 1px solid #25373D;
+    box-shadow: 0 1px 0 #60646D;
+    margin-bottom: 30px;
+    padding-bottom: 10px;
+  }
+}
+
+/deep/ .action {
+
+  &-dropdown {
+    background: #25373D;
+    padding: 10px;
+    margin-top: 0;
+  }
+
+  &-file {
+    overflow: hidden;
+    position: relative;
+
+    input[type="file"] {
+
+      max-width: 100%;
+
+      &::-webkit-file-upload-button {
+        display: none;
+      }
+
+      &::before {
+        content: 'Открыть';
+        display: inline-block;
+        background: -webkit-linear-gradient(top, #787c85, #3a4f55);
+        border: 1px solid #25373D;
+        border-radius: 3px;
+        padding: 5px 8px;
+        outline: none;
+        white-space: nowrap;
+        -webkit-user-select: none;
+        cursor: pointer;
+        text-shadow: 1px 1px #3e5467;
+        font-weight: bold;
+        font-size: 10pt;
+        width: 100%;
+        box-sizing: border-box;
+        color: #f1f5ff;
+        text-transform: uppercase;
+        font-size: 12px;
+        text-align: center;
+      }
+
+      &:hover::before {
+        border-color: black;
+      }
+
+      &:focus {
+        outline: 1px solid royalblue;
+      }
+
+      &:active::before {
+        background: -webkit-linear-gradient(top, #3a4f55, #787c85);
+      }
+    }
+
+  }
+
+  &-btn {
+    display: inline-block;
+    background: -webkit-linear-gradient(top, #787c85, #3a4f55);
+    border: 1px solid #25373D;
+    border-radius: 3px;
+    padding: 5px 8px;
+    outline: none;
+    white-space: nowrap;
+    -webkit-user-select: none;
+    cursor: pointer;
+    text-shadow: 1px 1px #3e5467;
+    font-weight: bold;
+    width: 100%;
+    box-sizing: border-box;
+    color: #f1f5ff;
+    text-transform: uppercase;
+    font-size: 12px;
+    text-align: center;
+    margin-top: 5px;
+
+    &:hover {
+      border-color: black;
+    }
+
+    &:focus {
+      outline: 1px solid royalblue;
+    }
+
+    &:active {
+      background: -webkit-linear-gradient(top, #3a4f55, #787c85);
+    }
+  }
+
+  &-color {
+    .color-sample {
+      vertical-align: middle;
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border: 2px solid white;
+    }
+  }
+}
+

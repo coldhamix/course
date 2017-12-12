@@ -1,0 +1,11 @@
+.action-btn {
+  &.selected {
+    border: 1px solid #D2D7D3;
+  }
+}
+
+.action-color {
+  input[type="color"] {
+    display: none;
+  }
+}
