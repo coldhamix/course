@@ -1,4 +1,5 @@
 import { AbstractTool } from './tool';
+import { Tool } from '../model/tool';
 
 export class Bucket extends AbstractTool {
 
@@ -6,29 +7,33 @@ export class Bucket extends AbstractTool {
   private startG: number;
   private startB: number;
 
-  constructor(private startX: number,
-              private startY: number,
-              private color: string,
-              private canvas: HTMLCanvasElement) {
-    super();
-    this.colorLayer = canvas.getContext('2d')
-      .getImageData(0, 0, canvas.width, canvas.height);
-
-    const currentColor = this.getPixel(startX, startY);
-    this.startR = currentColor[0];
-    this.startG = currentColor[1];
-    this.startB = currentColor[2];
-
-    this.convertColor(color);
+  constructor(protected canvas: HTMLCanvasElement,
+              protected tool: Tool) {
+    super(canvas, tool);
+    this.colorLayer = canvas.getContext('2d').getImageData(0, 0, canvas.width, canvas.height);
+    this.convertColor(tool.color);
   }
 
-  apply() {
+  move() {
+    // no-op
+  }
+
+  down() {
+    // no-op
+  }
+
+  up(startX: number, startY: number) {
+    const pos = (startY * this.canvas.width + startX) * 4;
+    this.startR = this.colorLayer.data[pos];
+    this.startG = this.colorLayer.data[pos + 1];
+    this.startB = this.colorLayer.data[pos + 2];
+
 
     if (this.startR === this.r && this.startG === this.g && this.startB === this.b) {
       return;
     }
 
-    const pixelStack = [[this.startX, this.startY]];
+    const pixelStack = [[startX, startY]];
     while (pixelStack.length) {
 
       const newPos = pixelStack.pop();
@@ -76,14 +81,11 @@ export class Bucket extends AbstractTool {
 
   }
 
-  private matchStartColor(pixelPos): boolean {
+  private matchStartColor(pixelPos) {
     const r = this.colorLayer.data[pixelPos];
     const g = this.colorLayer.data[pixelPos + 1];
     const b = this.colorLayer.data[pixelPos + 2];
     return (r === this.startR && g === this.startG && b === this.startB);
   }
-
-
-
 
 }

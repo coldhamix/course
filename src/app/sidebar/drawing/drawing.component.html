@@ -10,6 +10,14 @@
   </div>
   <div class="d-flex">
     <div class="action action-btn"
+         (click)="selectRectangle()"
+         [class.selected]="rectangleSelected">Прямоугольник</div>
+    <div class="action action-btn"
+         (click)="selectEllipse()"
+         [class.selected]="ellipseSelected">Эллипс</div>
+  </div>
+  <div class="d-flex">
+    <div class="action action-btn"
          (click)="selectBucket()"
          [class.selected]="bucketSelected">Заливка</div>
   </div>

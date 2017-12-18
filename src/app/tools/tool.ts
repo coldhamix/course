@@ -8,8 +8,20 @@ export class AbstractTool {
 
   protected colorLayer: ImageData;
 
-  apply(canvas: HTMLCanvasElement, tool: Tool): void {
-    throw new Error('Tool not implemented');
+  constructor(protected canvas: HTMLCanvasElement,
+              protected tool: Tool) {
+  }
+
+  down(x: number, y: number): void {
+    throw new Error('Method AbstractTool.down is not implemented');
+  }
+
+  move(x: number, y: number): void {
+    throw new Error('Method AbstractTool.move is not implemented');
+  }
+
+  up(x: number, y: number): void {
+    throw new Error('Method AbstractTool.up is not implemented');
   }
 
   protected convertColor(color: string) {

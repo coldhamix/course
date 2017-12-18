@@ -1,4 +1,4 @@
-export type ToolType = 'pencil' | 'eraser' | 'bucket';
+export type ToolType = 'pencil' | 'eraser' | 'bucket' | 'rect' | 'ellipse';
 
 export interface Tool {
   type: ToolType;
@@ -9,5 +9,5 @@ export interface Tool {
 export const DEFAULT_TOOL: Tool = {
   type: 'pencil',
   size: 4,
-  color: '#000000'
+  color: '#ff0000'
 };

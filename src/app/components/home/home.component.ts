@@ -3,7 +3,8 @@ import { CanvasService } from '../../canvas/canvas.service';
 import { CanvasSize } from '../../model/canvas-size';
 import { DrawingService } from '../../sidebar/drawing/drawing.service';
 import { Tool } from '../../model/tool';
-import { Bucket } from '../../fx/bucket';
+import { AbstractTool } from '../../tools/tool';
+import { toolFactory } from 'app/tools/tool-factory';
 
 @Component({
   selector: 'app-home',
@@ -33,6 +34,7 @@ export class HomeComponent implements AfterViewInit {
   drawing: boolean;
 
   private tool: Tool;
+  private toolInstance: AbstractTool;
   private dragElement: EventTarget;
 
   private x: number;
@@ -44,14 +46,6 @@ export class HomeComponent implements AfterViewInit {
     this.canvasService.canvasChanged.subscribe(size => zone.run(() => this.resizeCanvasInternal(size)));
     this.drawingService.toolChanged.subscribe(tool => this.onToolChanged(tool));
     this.updateCanvasSize(0, 0, 400, 400);
-  }
-
-  get isPencil(): boolean {
-    return this.tool ? this.tool.type === 'pencil' : false;
-  }
-
-  get isEraser(): boolean {
-    return this.tool ? this.tool.type === 'eraser' : false;
   }
 
   ngAfterViewInit() {
@@ -98,45 +92,38 @@ export class HomeComponent implements AfterViewInit {
     this.x = event.pageX - rect.left;
     this.y = event.pageY - rect.top;
 
-    context.beginPath();
-    context.moveTo(this.x, this.y);
+    this.toolInstance = toolFactory(this.canvas.nativeElement, this.tool);
+    this.toolInstance.down(this.x, this.y);
+
   }
 
   stopDrawing(event: MouseEvent): void {
-    this.onDraw(event);
+    const rect = this.canvas.nativeElement.getBoundingClientRect();
+    this.x = event.pageX - rect.left;
+    this.y = event.pageY - rect.top;
+
+    if (this.toolInstance) {
+      this.toolInstance.up(this.x, this.y);
+      this.toolInstance = null;
+    } else {
+      this.onDraw(event);
+    }
+
     this.drawing = false;
   }
 
   onDraw(event: MouseEvent): void {
     if (this.drawing) {
-
       const rect = this.canvas.nativeElement.getBoundingClientRect();
       const context = this.canvas.nativeElement.getContext('2d');
-
       this.x = event.pageX - rect.left;
       this.y = event.pageY - rect.top;
-
-      this.applyTool(context, this.x, this.y);
-
+      this.toolInstance.move(this.x, this.y);
     }
   }
 
   onCanvasLeft(event: MouseEvent): void {
     this.stopDrawing(event);
-  }
-
-  private applyTool(context: CanvasRenderingContext2D, x: number, y: number): void {
-    if (this.tool.type === 'bucket') {
-      const bucket = new Bucket(x, y, this.tool.color, this.canvas.nativeElement);
-      bucket.apply();
-    } else {
-      context.lineJoin = 'round';
-      context.lineCap = 'round';
-      context.lineWidth = this.tool.type === 'pencil' ? this.tool.size : this.tool.size * 2;
-      context.strokeStyle = this.tool.type === 'pencil' ? this.tool.color : 'white';
-      context.lineTo(x, y);
-      context.stroke();
-    }
   }
 
   private onToolChanged(tool: Tool): void {
@@ -145,7 +132,6 @@ export class HomeComponent implements AfterViewInit {
 
   private resizeCanvasInternal(size: CanvasSize) {
     if (this.canvasWidth !== size.width || this.canvasHeight !== size.height) {
-      console.log(size);
       const imageData = this.canvasService.save(size.left, size.top);
       this.canvasWidth = size.width;
       this.canvasHeight = size.height;
@@ -175,7 +161,7 @@ export class HomeComponent implements AfterViewInit {
       newLeft = dragX - rect.left + placeholder.offsetLeft;
       newWidth = placeholder.width - newLeft + canvas.offsetLeft;
       newHeight = newHeight > 0 ? newHeight : 1;
-    }  else if (this.dragElement === this.rightTopHandle.nativeElement) {
+    } else if (this.dragElement === this.rightTopHandle.nativeElement) {
       newTop = dragY - rect.top + placeholder.offsetTop;
       newWidth = newWidth > 0 ? newWidth : 1;
       newHeight = placeholder.height - newTop + canvas.offsetTop;

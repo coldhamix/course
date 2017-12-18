@@ -34,6 +34,14 @@ export class DrawingComponent {
     return this.currentTool === 'bucket';
   }
 
+  get rectangleSelected(): boolean {
+    return this.currentTool === 'rect';
+  }
+
+  get ellipseSelected(): boolean {
+    return this.currentTool === 'ellipse';
+  }
+
   selectEraser(): void {
     this.drawingService.toolChangedSubject.next({
       type: 'eraser',
@@ -53,6 +61,22 @@ export class DrawingComponent {
   selectBucket(): void {
     this.drawingService.toolChangedSubject.next({
       type: 'bucket',
+      size: this.currentSize,
+      color: this.currentColor
+    });
+  }
+
+  selectRectangle(): void {
+    this.drawingService.toolChangedSubject.next({
+      type: 'rect',
+      size: this.currentSize,
+      color: this.currentColor
+    });
+  }
+
+  selectEllipse(): void {
+    this.drawingService.toolChangedSubject.next({
+      type: 'ellipse',
       size: this.currentSize,
       color: this.currentColor
     });

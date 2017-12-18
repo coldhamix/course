@@ -59,8 +59,11 @@ export class CanvasService {
       const data = image.toBitmap();
       const imageData = new ImageData(width, height);
 
-      for (let i = 0; i < data.length; i++) {
-        imageData.data[i] = data[i];
+      for (let i = 0; i < data.length; i += 4) {
+        imageData.data[i] = data[i + 2];
+        imageData.data[i + 1] = data[i + 1];
+        imageData.data[i + 2] = data[i];
+        imageData.data[i + 3] = data[i + 3];
       }
 
       this.canvasChangedSubject.next({top: 0, left: 0, width, height});
