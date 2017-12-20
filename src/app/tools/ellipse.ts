@@ -31,11 +31,15 @@ export class Ellipse extends AbstractTool {
   private draw(x: number, y: number): void {
     const context = this.canvas.getContext('2d');
     const radius = Math.hypot(x - this.startX, y - this.startY);
-    context.lineJoin = 'bevel';
     context.lineWidth = this.tool.size;
     context.strokeStyle = this.tool.color;
     context.beginPath();
-    context.arc(this.startX, this.startY, radius, 0, 2 * Math.PI);
+    context.ellipse(
+      (this.startX + x) / 2,
+      (this.startY + y) / 2,
+      Math.abs((this.startX - x) / 2),
+      Math.abs((this.startY - y) / 2),
+      0, 0, 2 * Math.PI);
     context.stroke();
   }
 
